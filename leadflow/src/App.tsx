@@ -1,27 +1,57 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { supabase } from "./lib/supabase";
+import Login from "./pages/auth/login";
+import Dashboard from "./pages/dashboard/Dashboard";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setSession(session);
+      setLoading(false);
+    };
+
+    getSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <p className="text-sm text-gray-500">
+          Loading LeadFlow...
+        </p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <Login />;
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-       
-        </div>
-       
-      </section>
-
-      <div className="ticks"></div>
-
-      <h1>Hello</h1>
-     
-    </>
-  )
+    <DashboardLayout>
+      <Dashboard />
+    </DashboardLayout>
+  );
 }
 
-export default App
+export default App;
