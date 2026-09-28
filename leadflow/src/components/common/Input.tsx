@@ -5,6 +5,7 @@ interface InputProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  autoComplete?: string;
 }
 
 function Input({
@@ -14,10 +15,11 @@ function Input({
   value,
   onChange,
   required = false,
+  autoComplete,
 }: InputProps) {
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-slate-700">
         {label}
       </label>
 
@@ -26,8 +28,9 @@ function Input({
         value={value}
         placeholder={placeholder}
         required={required}
+        autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-black focus:ring-1 focus:ring-black"
+        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
       />
     </div>
   );

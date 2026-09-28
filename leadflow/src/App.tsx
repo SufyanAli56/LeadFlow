@@ -1,56 +1,37 @@
-import { useEffect, useState } from "react";
-import { supabase } from "./lib/supabase";
-import Login from "./pages/auth/login";
-import Dashboard from "./pages/dashboard/Dashboard";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import GuestRoute from "./components/auth/GuestRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
+import Login from "./pages/auth/login";
+import SignUp from "./pages/auth/signup";
+import Dashboard from "./pages/dashboard/Dashboard";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
-  const [session, setSession] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      setSession(session);
-      setLoading(false);
-    };
-
-    getSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <p className="text-sm text-gray-500">
-          Loading LeadFlow...
-        </p>
-      </div>
-    );
-  }
-
-  if (!session) {
-    return <Login />;
-  }
-
   return (
-    <DashboardLayout>
-      <Dashboard />
-    </DashboardLayout>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<GuestRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/leads" element={<ComingSoon title="Leads" />} />
+            <Route
+              path="/campaigns"
+              element={<ComingSoon title="Campaigns" />}
+            />
+            <Route path="/inbox" element={<ComingSoon title="Inbox" />} />
+            <Route path="/settings" element={<ComingSoon title="Settings" />} />
+          </Route>
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
