@@ -5,9 +5,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Dashboard from "./pages/dashboard/Dashboard";
-import ComingSoon from "./pages/ComingSoon";
-import LeadFinder from "./pages/lead-finder/LeadFinder";
-import Leads from "./pages/leads/Leads";
+
 
 function App() {
   return (
@@ -22,23 +20,9 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
 
-            <Route path="/leads" element={<Leads />} />
-            <Route path="/lead-finder" element={<LeadFinder />} />
 
-            <Route
-              path="/campaigns"
-              element={<ComingSoon title="Campaigns" />}
-            />
-
-            <Route
-              path="/inbox"
-              element={<ComingSoon title="Inbox" />}
-            />
-
-            <Route
-              path="/settings"
-              element={<ComingSoon title="Settings" />}
-            />
+           
+           
           </Route>
         </Route>
 
