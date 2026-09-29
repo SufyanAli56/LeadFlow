@@ -1,0 +1,4 @@
+# Supabase local development configuration (minimal)
+
+[functions.find-leads]
+verify_jwt = true
