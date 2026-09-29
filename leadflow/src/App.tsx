@@ -5,6 +5,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Leads from "./pages/dashboard/Leads";
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
 
-
+ <Route path="/leads" element={<Leads />} />
            
            
           </Route>
